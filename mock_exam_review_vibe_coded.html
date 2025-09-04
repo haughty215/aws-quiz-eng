@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exam Review App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f6ff;
+      color: #222;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+    }
+    .container {
+      width: 100%;
+      max-width: 700px;
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    h1, h2 {
+      color: #0057d9;
+      text-align: center;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      background: #0057d9;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #003f9c;
+    }
+    .results {
+      margin-top: 20px;
+    }
+    .question-item {
+      background: #e9f1ff;
+      margin: 5px 0;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+    #leaderboard-section {
+      margin-top: 30px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Exam Review App</h1>
+
+    <div id="form-section">
+      <h2>Submit Your Questions</h2>
+      <input type="text" id="username" placeholder="Enter your name" required>
+      <textarea id="questionInput" rows="3" placeholder="Enter your question here..."></textarea>
+      <button onclick="submitSingleQuestion()">Submit Question</button>
+      <button onclick="showLeaderboard()" style="background:#28a745; margin-top:15px;">View Final Leaderboard</button>
+    </div>
+
+    <div id="results-section" style="display:none;">
+      <h2>Your Progress</h2>
+      <div id="results"></div>
+    </div>
+
+    <div id="leaderboard-section">
+      <h2>Final Leaderboard</h2>
+      <div id="leaderboard"></div>
+      <button onclick="hideLeaderboard()">Back</button>
+    </div>
+  </div>
+
+  <script>
+    const maxQuestions = 10;
+    const allSubmissions = [];
+    let submittedCount = 0;
+
+    function submitSingleQuestion() {
+      const username = document.getElementById('username').value.trim();
+      const question = document.getElementById('questionInput').value.trim();
+
+      if (!username) {
+        alert('Please enter your name first.');
+        return;
+      }
+
+      if (!question) {
+        alert('Please enter a question.');
+        return;
+      }
+
+      submittedCount++;
+      allSubmissions.push(question);
+      document.getElementById('questionInput').value = '';
+
+      if (submittedCount >= maxQuestions) {
+        alert("You have reached your 10-question limit.");
+      }
+      showResults();
+    }
+
+    function showResults() {
+      // Count frequency of each question
+      const counts = {};
+      allSubmissions.forEach(q => {
+        counts[q] = (counts[q] || 0) + 1;
+      });
+
+      // Sort by frequency
+      const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+      // Display in progress section
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '';
+      sorted.forEach(([question, count]) => {
+        const div = document.createElement('div');
+        div.className = 'question-item';
+        div.textContent = `${question} — (${count} votes)`;
+        resultsDiv.appendChild(div);
+      });
+
+      document.getElementById('results-section').style.display = 'block';
+    }
+
+    function showLeaderboard() {
+      const counts = {};
+      allSubmissions.forEach(q => {
+        counts[q] = (counts[q] || 0) + 1;
+      });
+      const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+      const leaderboardDiv = document.getElementById('leaderboard');
+      leaderboardDiv.innerHTML = '';
+      sorted.forEach(([question, count], index) => {
+        const div = document.createElement('div');
+        div.className = 'question-item';
+        div.textContent = `#${index+1}: ${question} — (${count} votes)`;
+        leaderboardDiv.appendChild(div);
+      });
+
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('results-section').style.display = 'none';
+      document.getElementById('leaderboard-section').style.display = 'block';
+    }
+
+    function hideLeaderboard() {
+      document.getElementById('leaderboard-section').style.display = 'none';
+      document.getElementById('form-section').style.display = 'block';
+      document.getElementById('results-section').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
