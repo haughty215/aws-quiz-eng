@@ -1,6 +1,4 @@
 
-***
-
 # Revision Hub
 
 ## Overview  
@@ -33,6 +31,4 @@ Revision Question Hub is a collaborative app designed to streamline the review a
 3. **Review questions** submitted by others and participate in discussions.  
 4. **Check rankings** to see top submitted questions.  
 5. Use insights to guide your weekly revision focus.
-
-***
 
