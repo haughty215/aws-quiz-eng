@@ -1,4 +1,3 @@
-draft README for revision app project, outlining its purpose and core features:
 
 ***
 
@@ -37,4 +36,3 @@ Revision Question Hub is a collaborative app designed to streamline the review a
 
 ***
 
-Would you like me to help you draft more detailed technical specs or user instructions as well?
